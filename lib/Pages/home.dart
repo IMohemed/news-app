@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:news_app/Pages/article_view.dart';
 import 'package:news_app/model/article_model.dart';
 import 'package:news_app/model/category_model.dart';
 import 'package:news_app/model/source_model.dart';
@@ -30,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<CategoryModel> categories=[]; 
   List<SliderModel> sliders=[]; 
   List<Article> articles=[];
-  //bool _loading=true;
+  // bool _loading=true;
 
   @override
   void initState() {
@@ -40,27 +41,27 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  // getNews()async{
-  //   News newsclass = News();
-  //   await newsclass.getNews();
-  //   articles=newsclass.news;
-  //   print(articles);
-  //   // setState(() {
-  //   //   _loading=false;
-  //   // });
-  // }
- Future<void> getNews() async{
-     String endurl = "https://newsapi.org/v2/everything?q=tesla&from=2023-11-12&sortBy=publishedAt&apiKey=837a7f68799644bcbb1d5700fdf6a227";
-     var client=http.Client();
-     try{
-     var response = await client.get(Uri.parse(endurl));
-   //  print(response.code);
+  getNews()async{
+    News newsclass = News();
+    await newsclass.getNews();
+    articles=newsclass.news;
+    //print(articles);
+    // setState(() {
+    //   _loading=false;
+    // });
+  }
+//  Future<void> getNews() async{
+//      String endurl = "https://newsapi.org/v2/everything?q=tesla&from=2023-11-12&sortBy=publishedAt&apiKey=837a7f68799644bcbb1d5700fdf6a227";
+//      var client=http.Client();
+//      try{
+//      var response = await client.get(Uri.parse(endurl));
+//    //  print(response.code);
      
-     //var json = jsonDecode(response.body);
-     print(response.body);}
-     catch(e){
-      log(e.toString() );
-     }}
+//      //var json = jsonDecode(response.body);
+//      //print(response.body);}
+//      catch(e){
+//       log(e.toString() );
+//      }}
   @override
   Widget build(BuildContext context) {
     
@@ -92,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           
       //   },
       //  ),
-        body: SingleChildScrollView(
+        body:SingleChildScrollView(
           child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: sliders.length,
             viewportFraction: 1,
             unlimitedMode: true,
-            enableAutoSlider: true,
+            //enableAutoSlider: true,
             //slideTransform: CubeTransform(),
             slideIndicator: CircularSlideIndicator(
               padding: EdgeInsets.only(bottom: 32),
@@ -155,8 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 10.0,),
               
               Container(
-                child: ListView.builder(shrinkWrap: true,itemCount: articles.length,itemBuilder: (context,index){
-                  return BlogTile(imageUrl: articles[index].urltoimage!, title: articles[index].title!, desc:articles[index].description!);
+                child: ListView.builder(shrinkWrap: true,physics: ClampingScrollPhysics(),itemCount: articles.length,itemBuilder: (context,index){
+                  return BlogTile(imageUrl: articles[index].urltoimage!, title: articles[index].title!,
+                   desc:articles[index].description!,url: articles[index].url!,
+                   );
                 }),
               )
               // GestureDetector(
@@ -268,49 +271,57 @@ class CategoryTile extends StatelessWidget {
   
 }
 class BlogTile extends StatelessWidget {
-  String imageUrl,title,desc;
-  BlogTile({required this.imageUrl,required this.title,required this.desc});
+  String imageUrl,title,
+  desc,url
+  ;
+  BlogTile({required this.imageUrl,required this.title,
+  required this.desc,required this.url
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
                 onTap: () {
-                  
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleView(blogUrl: url)));
                 },
                
-              child:Padding(
-                padding: const EdgeInsets.symmetric(horizontal:10.0),
-                child: Material(
-                  elevation: 3.0,
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 4.0),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(imageUrl,height: 150,width: 150,fit: BoxFit.cover,)),
-                          ),
-                          SizedBox(width: 7.0,),
-                          Column(
-                            children: [Container(
-                              width: MediaQuery.of(context).size.width/1.9,
-                              child: Text(title,style: TextStyle(color: Colors.black,fontSize: 17.0,fontWeight: FontWeight.w500),)
-                            ),
-                            SizedBox(height: 5.0,),
+              child:Container(
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:10.0,vertical: 6.0),
+                  child: Material(
+                    
+                    elevation: 3.0,
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 4.0),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Container(
-                            width: MediaQuery.of(context).size.width/1.9,
-                            child: Text(desc,style: TextStyle(color: Colors.black38,fontSize: 15.0,fontWeight: FontWeight.w500),)
-                          ),]
-                          ),
-                          
-                        ],
-                      ),
+                              
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(imageUrl,height: 150,width: 150,fit: BoxFit.cover,)),
+                            ),
+                            SizedBox(width: 7.0,),
+                            Column(
+                              children: [Container(
+                                width: MediaQuery.of(context).size.width/1.9,
+                                child: Text(title,maxLines: 2,style: TextStyle(color: Colors.black,fontSize: 17.0,fontWeight: FontWeight.w500),)
+                              ),
+                              SizedBox(height: 5.0,),
+                              Container(
+                              width: MediaQuery.of(context).size.width/1.9,
+                              child: Text(desc,maxLines: 3,style: TextStyle(color: Colors.black54,fontSize: 15.0,fontWeight: FontWeight.w500),)
+                            ),]
+                            ),
+                            
+                          ],
+                        ),
+                    ),
+                    
                   ),
-                  
                 ),
               ),
               );
