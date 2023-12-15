@@ -1,4 +1,4 @@
-class SliderModel{
+class ShowCategoryModel{
   //Source source;
   String? auther;
   String? title;
@@ -8,7 +8,7 @@ class SliderModel{
   String? publishedAt;
   String? content;
 
-  SliderModel({
+  ShowCategoryModel({
      this.auther,
     //required this.source,
      this.title,
@@ -16,9 +16,3 @@ class SliderModel{
      this.content, this.publishedAt
     });
 }
-  // Source({required this.categoryName,required this.image});
-
-  // factory Source.fromJson(Map<String,dynamic> json){
-  //   return Source(categoryName: json['id'],image: json['name']);
-  // }
-

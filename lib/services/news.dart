@@ -16,7 +16,7 @@ class News{
      //var client=http.Client();
      
      try{
-      var response = await http.get(Uri.parse("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=837a7f68799644bcbb1d5700fdf6a227"));
+      var response = await http.get(Uri.parse("https://newsapi.org/v2/everything?domains=wsj.com&apiKey=837a7f68799644bcbb1d5700fdf6a227"));
     print(response.statusCode);
     print("object");
      

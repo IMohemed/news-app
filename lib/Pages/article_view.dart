@@ -14,11 +14,25 @@ class ArticleView extends StatefulWidget {
 class _ArticleViewState extends State<ArticleView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      appBar: AppBar(
+        
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Flutter",style: TextStyle(color: Colors.black),),
+            Text("News",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)
+          ],
+          ),
+          //centerTitle: true,
+          backgroundColor: Colors.blueGrey,
+        elevation: 0.0,
+       ), 
+       body: Container(
       child: WebView(
         initialUrl: widget.blogUrl,
         javascriptMode: JavascriptMode.unrestricted,
       ),
-    );
+    ));
   }
 }

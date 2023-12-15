@@ -29,12 +29,12 @@ List<CategoryModel> getCategories(){
   List<CategoryModel> category=[];
   CategoryModel categoryModel=new CategoryModel();
 
-  categoryModel.categoryName="Bussines";
+  categoryModel.categoryName="Business";
   categoryModel.image="assets/images/bird.jpeg";
   category.add(categoryModel);
   categoryModel=new CategoryModel();
 
-  categoryModel.categoryName="entertaintment";
+  categoryModel.categoryName="entertainment";
   categoryModel.image="assets/images/bird.jpeg";
   category.add(categoryModel);
   categoryModel=new CategoryModel();
@@ -44,7 +44,12 @@ List<CategoryModel> getCategories(){
   category.add(categoryModel);
   categoryModel=new CategoryModel();
 
-  categoryModel.categoryName="londery";
+  categoryModel.categoryName="Sports";
+  categoryModel.image="assets/images/bird.jpeg";
+  category.add(categoryModel);
+  categoryModel=new CategoryModel();
+
+  categoryModel.categoryName="General";
   categoryModel.image="assets/images/bird.jpeg";
   category.add(categoryModel);
   categoryModel=new CategoryModel();

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:news_app/Pages/article_view.dart';
+import 'package:news_app/Pages/category_news.dart';
 import 'package:news_app/model/article_model.dart';
 import 'package:news_app/model/category_model.dart';
 import 'package:news_app/model/source_model.dart';
@@ -29,14 +30,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //ApiService client = ApiService();
   List<CategoryModel> categories=[]; 
-  List<SliderModel> sliders=[]; 
+  List<SliderModel> Sliders=[]; 
   List<Article> articles=[];
   // bool _loading=true;
 
   @override
   void initState() {
     categories = getCategories();
-    sliders = getSliders();
+    getSliders();
     getNews();
     super.initState();
   }
@@ -45,6 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
     News newsclass = News();
     await newsclass.getNews();
     articles=newsclass.news;
+    //print(articles);
+    // setState(() {
+    //   _loading=false;
+    // });
+  }
+  getSliders()async{
+    slider newsclass = slider();
+    await newsclass.getSliders();
+    Sliders=newsclass.sliders;
     //print(articles);
     // setState(() {
     //   _loading=false;
@@ -66,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      
        appBar: AppBar(
         
         title: Row(
@@ -128,17 +139,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 200,
           child: CarouselSlider.builder(
             slideBuilder: (index) {
-              String? slide = sliders[index].image;
-              String? slide1 = sliders[index].name;
+              String? slide = Sliders[index].urltoimage;
+              String? slide1 = Sliders[index].title;
               return buildImage(slide!, index, slide1!);
             },
-            itemCount: sliders.length,
+            itemCount: Sliders.length,
             viewportFraction: 1,
             unlimitedMode: true,
             //enableAutoSlider: true,
             //slideTransform: CubeTransform(),
             slideIndicator: CircularSlideIndicator(
-              padding: EdgeInsets.only(bottom: 32),
+              padding: EdgeInsets.only(bottom: 12),
             ),
           ),
         ),
@@ -217,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: 
-            Image.asset(image,height: 250,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,)
+            Image.network(image,height: 250,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,)
         ),
         Container(
           padding: EdgeInsets.only(left: 10.0),
@@ -242,29 +253,34 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 16),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: Image.asset(image,width: 120,height: 70,fit: BoxFit.cover,)
-          ),
-          Container(
-            width: 120,
-            height: 70,
-            decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>CategoryNews(name: categoryName)));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 16),
+        child: Stack(
+          children: [
+            ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              color: Colors.black26
+              child: Image.asset(image,width: 120,height: 70,fit: BoxFit.cover,)
             ),
-            child: Center(
-              child: Text(
-                categoryName,
-                style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
+            Container(
+              width: 120,
+              height: 70,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: Colors.black26
               ),
-            ),
-          )
-        ],
+              child: Center(
+                child: Text(
+                  categoryName,
+                  style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -282,7 +298,7 @@ class BlogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
                 onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleView(blogUrl: url)));
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>ArticleView(blogUrl: url)));
                 },
                
               child:Container(
